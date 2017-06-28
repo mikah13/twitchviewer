@@ -148,11 +148,25 @@ $(document).ready(() => {
     'zingle313',
     'zotac_cup'
   ];
+
+  const moveTo = new MoveTo({
+    tolerance: 1,
+    duration: 1000,
+    easing: 'easeOutQuart'
+  });
+
+  const target = $('#target');
+
+  moveTo.move(target);
+  const trigger = $('.js-trigger')[0];
+
+  moveTo.registerTrigger(trigger);
+
   const clientID = "?client_id=em2uqxfm44rmjop2ism5iyga6778f5";
   const endpoint = "https://api.twitch.tv/kraken/channels/";
   const statuscheck = "https://api.twitch.tv/kraken/streams/";
   const twitchLink = "https://www.twitch.tv/";
-  var onlineArray = [];
+  var array = [];
   streamList.forEach((el) => {
     $.ajax({
       method: "GET",
@@ -166,16 +180,39 @@ $(document).ready(() => {
       }).then((status) => {
         twitch.logo === null ? twitch.logo = "https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_70x70.png" : twitch.logo = twitch.logo;
         if (status.stream != null) {
-          var channel = "<tr><td><a href= '" +twitchLink+ twitch.name+" 'target='_blank' style=' width: 100%; height: 123px;'><img src='" + twitch.logo + "' alt='logo' />" + twitch.name + "</a> </td>  <td><p>" + twitch.game + "</p></td> <td><p>" + twitch.status + "</p></td><td> <span id='red'></span>" + status.stream.viewers + "</td></tr>";
-
-
-
-          $("#online").append(channel);
-          onlineArray.push(el)
+          var channel = "<tr id='" + el + "'><td><a href= '" + twitchLink + twitch.name + " 'target='_blank' style=' width: 100%; height: 123px;'><img src='" + twitch.logo + "' alt='logo' />" + twitch.name + "</a> </td>  <td><p>" + twitch.game + "</p></td> <td id='title'><p>" + twitch.status + "</p></td><td> <span id='green'></span>" + status.stream.viewers + "</td></tr>";
+          if (array.length === 0) {
+            array.push(status.stream.viewers);
+            $("#online").append(channel);
+          }
+          // descending order online channel viewers
+          for (var i = 0; i < array.length; i++) {
+            if (status.stream.viewers > array[i]) {
+              array.splice(i, 0, status.stream.viewers);
+              var curTr = $("#online tr")[i];
+              $(curTr).before(channel);
+              break;
+            } else if (i === array.length - 1 && array[i] > status.stream.viewers) {
+              array.push(status.stream.viewers);
+              $("#online").append(channel);
+            } else if (i === 0 && array[0] < status.stream.viewer) {
+              array.unshift(status.stream.viewers);
+              $("#online").prepend(channel);
+            }
+          }
         } else {
-          channel = "<tr><td><a href= '" +twitchLink+ twitch.name+" 'target='_blank' style=' width: 100%; height: 123px;'><img src='" + twitch.logo + "' alt='logo' />" + twitch.name + "</a> </td>  <td><p>" + twitch.game + "</p></td> <td><p>" + twitch.status + "</p></td><td><p> Offline </p></td></tr>";
+          channel = "<tr id='" + el + "'><td><a href= '" + twitchLink + twitch.name + " 'target='_blank'><img src='" + twitch.logo + "' alt='logo' />" + twitch.name + "</a> </td>  <td><p>" + twitch.game + "</p></td> <td id='title'><p>" + twitch.status + "</p></td><td><p> Offline </p></td></tr>";
           $("#offline").append(channel);
         }
+        var ID = "#" + el;
+        $(ID).hover(() => {
+          if (twitch.video_banner !== null) {
+            $("body").css("background-image", "url(" + twitch.video_banner + ")")
+          } else {
+            $("body").css("background-image", "url('https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_70x70.png')")
+          }
+
+        })
       }).catch((error) => {
         console.log(error);
       })
@@ -183,8 +220,6 @@ $(document).ready(() => {
       console.log(error);
     });
   });
-  $(".clickable-row").on("click",function() {
-        window.location = $(this).data("href");
-    });
+
 
 });

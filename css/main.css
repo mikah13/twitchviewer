@@ -1,3 +1,11 @@
+a, p, h1 {
+  font-family: 'Fresca', sans-serif;
+}
+
+a, p {
+  font-size: 19px
+}
+
 .table-hover tbody tr:hover {
   background-color: rgb(98, 28, 167);
 }
@@ -7,15 +15,16 @@
 }
 
 td a img {
-  width: 60px;
+  width: 80px;
   border-radius: 50px;
 }
 
-#red {
+#green {
+  margin-right: 3px;
   height: .8rem;
   width: .8rem;
   border-radius: .4rem;
-  background-color: #fc3636;
+  background-color: #22d629;
   display: inline-block;
 }
 
@@ -30,4 +39,25 @@ td:hover {
 a:hover {
   text-decoration: none;
   color: rgb(231, 231, 231);
+}
+
+.btn {
+  margin: 0 auto;
+}
+
+.table td {
+  text-align: justify;
+  vertical-align: middle;
+}
+
+img {
+  margin-right: 10px;
+}
+
+td img:hover {
+  box-shadow: 0 0 0 4px white;
+}
+
+.navbar-brand {
+  font-size: 20px;
 }
