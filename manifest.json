@@ -4,7 +4,7 @@
   "default_locale": "en",
   "description": "A Twitch Channel Viewer Using Twitch API",
   "icons": [{
-    "src": "https://mikah13.github.io/twitchviewer/",
+    "src": "https://cdn-images-1.medium.com/fit/c/128/128/1*LMMVBS4uMolpL0fW08cQuQ.png",
     "sizes": "192x192",
     "type": "image/png"
   }],
