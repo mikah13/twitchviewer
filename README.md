@@ -1,2 +1,2 @@
 # twitchviewer
-#IM GOOD SIR
+IM GOOD SIR
